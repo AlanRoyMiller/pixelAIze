@@ -43,6 +43,6 @@ class ImageProcessor:
         known_array = np.ones_like(image, dtype=np.bool_)
         known_array[y:y + height, x:x + width] = False
 
-        return pixelated_image, known_array, 
+        return pixelated_image, known_array, target_array
 
     
