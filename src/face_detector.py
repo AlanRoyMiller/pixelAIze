@@ -1,5 +1,4 @@
 import cv2
-from pathlib import Path
 
 class FaceDetector:
     def __init__(self):
@@ -24,11 +23,9 @@ class FaceDetector:
 
         # Convert the image to gray scale
         gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-
+  
         # Detect faces
-        faces = self.face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=5, minSize=(50, 50))
-
-        
+        faces = self.face_cascade.detectMultiScale(gray, scaleFactor=1.1, minNeighbors=4, minSize=(40, 40))
 
         return faces
 
