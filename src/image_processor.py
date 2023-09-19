@@ -1,14 +1,28 @@
 import torch
 import numpy as np
 from cryptography.fernet import Fernet
+import logging
 
-class ImageProcessor:
+class ImageProcessor:  
     def __init__(self):
+        self.key = None
+        self.cipher_suite = None
+
+    def generate_key(self):
         self.key = Fernet.generate_key()
         self.cipher_suite = Fernet(self.key)
+        return self.key
+
+    def set_key(self, key):
+        key_bytes = bytes(key[2:-1], 'utf-8')
+        self.key = key_bytes
+        self.cipher_suite = Fernet(self.key)
+
+
 
     def encrypt_data(self, data):
-        return self.cipher_suite.encrypt(data.tobytes())
+        data_shape = data.shape
+        return self.cipher_suite.encrypt(data.tobytes()), data_shape
 
     def decrypt_data(self, encrypted_data, original_shape):
         decrypted_data = self.cipher_suite.decrypt(encrypted_data)
@@ -40,9 +54,7 @@ class ImageProcessor:
 
         pixelated_image[y:y + height, x:x + width] = pixelated_area
 
-        known_array = np.ones_like(image, dtype=np.bool_)
-        known_array[y:y + height, x:x + width] = False
 
-        return pixelated_image, known_array, 
+        return pixelated_image, target_array
 
     

@@ -59,8 +59,10 @@
 <body>
 
 <div class="container">
-    <img src="{{ image_url }}" class="image" alt="Pixelated Image"> <!-- Updated class name here -->
-    <a href="{{ image_url }}" download class="button">Download Image</a> <!-- Updated class name here -->
+    <img src="{{ image_url }}" class="image" alt="Pixelated Image">
+    <a href="{{ image_url }}" download class="button">Download Image</a>
+    <p>Your Encryption Key: {{ key }}</p>
+    <a href="http://localhost:8000/depixelate/">Go Depixelate</a>
 </div>
 
 </body>
