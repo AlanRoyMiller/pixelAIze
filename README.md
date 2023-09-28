@@ -42,4 +42,4 @@ http://localhost:8000/
 
 
 ![Alt Text](Original_image.JPG)
-![Alt Text](Pixelated_image.JPG)
+![Alt Text](Pixelated_image.jpg)
