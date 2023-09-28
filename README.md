@@ -39,3 +39,7 @@ http://localhost:8000/
 1. Upload the encrypted image and insert encryption key to depixelate the image.
 
 2. You now have the original image again.
+
+
+![Alt Text](Original_image.JPG)
+![Alt Text](Pixelated_image.JPG)
