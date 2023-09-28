@@ -23,4 +23,19 @@ cd pixelAIzer
 pip install -r requirements.txt
 
 4. Run the application:
-python app/main.py
+uvicorn app.main:app --reload
+
+5. Open the application in your browser:
+http://localhost:8000/
+
+6. Upload image to pixelate all faces
+
+7. You can now Download
+
+8. Save the encryption Key if you want depixelate that same image.
+
+## Depixelate an image:
+
+1. Upload the encrypted image and insert encryption key to depixelate the image.
+
+2. You now have the original image again.
