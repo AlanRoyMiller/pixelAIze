@@ -1,4 +1,4 @@
-# PixelAIzer
+# PixelAIze
 
 PixelAIzer is an AI-powered video and image pixelizer that allows users to pixelate and depixelate faces within a selected region. It uses pre-trained models for face detection and algorithms with encryption methods for the pixelation and depixelization process.
 
