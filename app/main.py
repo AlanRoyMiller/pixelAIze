@@ -8,6 +8,13 @@ from fastapi.staticfiles import StaticFiles
 
 app = FastAPI()
 
+#create a directory for uploaded images if it doesn't exist
+
+if not os.path.exists("uploaded_images/pixelated_images/"):
+    os.makedirs("uploaded_images/pixelated_images/")
+if not os.path.exists("output/pixelated_images/"):
+    os.makedirs("output/pixelated_images/")
+
 app.mount("/output", StaticFiles(directory="output/pixelated_images/"), name="output")
 templates = Jinja2Templates(directory=os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "templates")))
 
@@ -60,5 +67,5 @@ async def create_upload_file(request: Request, file: UploadFile, encryption_key:
     pixelizer.depixelize_image(input_path, output_path, encryption_key)
 
     image_url = f"/output/{file.filename}"
-    return templates.TemplateResponse("upload_photo copy.html", {"request": request, "image_url": image_url})
+    return templates.TemplateResponse("upload_photo copy.html", {"request": request, "image_url": output_path})
 
