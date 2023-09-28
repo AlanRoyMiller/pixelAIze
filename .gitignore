@@ -1,3 +1,5 @@
 .venv
 __pycache__/
 STEPS.md
+output/
+uploaded_images/
