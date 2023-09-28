@@ -5,17 +5,23 @@ import os
 from fastapi.responses import HTMLResponse, RedirectResponse
 from fastapi.templating import Jinja2Templates
 from fastapi.staticfiles import StaticFiles
+import tempfile
 
 app = FastAPI()
 
 #create a directory for uploaded images if it doesn't exist
 
 if not os.path.exists("uploaded_images"):
-    os.makedirs("uploaded_images")
-if not os.path.exists("output/pixelated_images/"):
-    os.makedirs("output/pixelated_images/")
+    os.makedirs("uploaded_images/original", exist_ok=True)
+    os.makedirs("uploaded_images/pixelated", exist_ok=True)
+
+if not os.path.exists("output"):
+    os.makedirs("output/pixelated_images/", exist_ok=True)
+    os.makedirs("output/depixelated_images/", exist_ok=True)
 
 app.mount("/output", StaticFiles(directory="output/pixelated_images/"), name="output")
+app.mount("/depixelated", StaticFiles(directory="output/depixelated_images/"), name="depixelate")
+
 templates = Jinja2Templates(directory=os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "templates")))
 
 @app.get("/")
@@ -30,17 +36,16 @@ async def read_item(request: Request):
 @app.post("/upload/")
 async def create_upload_file(file: UploadFile, request: Request):
 
+    file_bytes = await file.read()
+    
+    with tempfile.NamedTemporaryFile(delete=False) as temp:
+        temp.write(file_bytes)
+        temp.flush()  
 
-    input_path = Path("uploaded_images") / file.filename
-    output_path = Path("output/pixelated_images") / file.filename
-    
-    # Save the uploaded file to the "uploaded_images" directory
-    with open(input_path, "wb") as buffer:
-        buffer.write(file.file.read())
-    
-    # Create an instance of ImagePixelizer and process the image
-    pixelizer = ImagePixelizer()
-    key = pixelizer.pixelize_image(input_path, output_path)
+        pixelizer = ImagePixelizer()
+        key = pixelizer.pixelize_image(temp.name, "output/pixelated_images/" + file.filename)
+        
+    os.unlink(temp.name)
 
     image_url = f"/output/{file.filename}"
 
@@ -55,17 +60,22 @@ async def read_item(request: Request):
 
 @app.post("/depixelate/")
 async def create_upload_file(request: Request, file: UploadFile, encryption_key: str = Form(...)):
-    print(f"Received key: {encryption_key}")
-    input_path = Path("uploaded_images") / file.filename
-    output_path = Path("output/depixelated_images") / file.filename
+    # Read the uploaded file in memory
+    file_bytes = await file.read()
+    
+    # Create a temporary file
+    with tempfile.NamedTemporaryFile(delete=False) as temp:
+        temp.write(file_bytes)
+        temp.flush()  # Ensure all data is written to the file before reading it
 
-    with open(input_path, "wb") as buffer:
-        buffer.write(file.file.read())
+        # Now you can use temp.name as a file path input to your depixelize_image function
+        pixelizer = ImagePixelizer()
+        pixelizer.depixelize_image(temp.name, "output/depixelated_images/" + file.filename, encryption_key)
+        
+    # Delete the temporary file after use
+    os.unlink(temp.name)
 
-    # Create an instance of ImagePixelizer and process the image
-    pixelizer = ImagePixelizer()
-    pixelizer.depixelize_image(input_path, output_path, encryption_key)
+    image_url = f"/depixelated/{file.filename}"
+    return templates.TemplateResponse("index copy.html", {"request": request, "image_url": image_url})
 
-    image_url = f"/output/{file.filename}"
-    return templates.TemplateResponse("upload_photo copy.html", {"request": request, "image_url": output_path})
 
