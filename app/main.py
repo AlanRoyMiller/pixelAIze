@@ -10,8 +10,8 @@ app = FastAPI()
 
 #create a directory for uploaded images if it doesn't exist
 
-if not os.path.exists("uploaded_images/pixelated_images/"):
-    os.makedirs("uploaded_images/pixelated_images/")
+if not os.path.exists("uploaded_images"):
+    os.makedirs("uploaded_images")
 if not os.path.exists("output/pixelated_images/"):
     os.makedirs("output/pixelated_images/")
 
