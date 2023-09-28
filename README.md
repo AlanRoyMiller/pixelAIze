@@ -30,9 +30,9 @@ http://localhost:8000/
 
 6. Upload image to pixelate all faces
 
-7. You can now Download
+7. You can now Download the pixelate image 
 
-8. Save the encryption Key if you want depixelate that same image.
+8. You can save the encryption Key if you want depixelate that same image. (Optional)
 
 ## Depixelate an image:
 
