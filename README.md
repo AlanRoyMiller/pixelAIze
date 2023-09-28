@@ -42,4 +42,7 @@ http://localhost:8000/
 
 
 ![Alt Text](Original_image.JPG)
-![Alt Text](Pixelated_image.jpg)
+![Alt Text](upload_original.png)
+![Alt Text](download_pixelated.png)
+![Alt Text](upload_pixelated.png)
+![Alt Text](download_restored.png)
